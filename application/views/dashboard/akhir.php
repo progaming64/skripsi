@@ -16,7 +16,7 @@
                 <span class="icon text-white-50">
                     <i class="fa-solid fa-children"></i>
                 </span>
-                <span class="text">Lihat Undangan Pernikahan</span>
+                <span class="text">Lihat Undangan</span>
             </a>
         </div>
     </div>

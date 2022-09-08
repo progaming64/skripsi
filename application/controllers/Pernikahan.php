@@ -7,6 +7,7 @@ class Pernikahan extends CI_Controller
     {
         parent::__construct();
         is_logged_in();
+        $this->load->model('Pernikahan_model');
     }
 
     public function hasilc()
@@ -1088,13 +1089,29 @@ class Pernikahan extends CI_Controller
         $data['title'] = 'Desain Undangan';
         $data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
         $data['gallery'] = $this->db->get_where('gallery', ['id_user' => $this->session->userdata('id_user')])->row_array();
-
-        $data['desain'] = $this->db->get_where('desain_user', ['id_user' => $this->session->userdata('id_user')])->row_array();
+        $data['template_pernikahan'] = $this->db->get_where('template_pernikahan')->result();
 
         $this->load->view('templates/header', $data);
         $this->load->view('templates/sidebar_akhir', $data);
         $this->load->view('templates/topbar', $data);
         $this->load->view('pernikahan/desain', $data);
         $this->load->view('templates/footer');
+    }
+
+
+    function simpanTemplate()
+    {
+        $id_template = $this->input->post('id_template');
+
+        if (!$id_template) {
+            $result = [
+                'success' => false
+            ];
+            echo json_encode($result);
+            exit;
+        }
+
+        $result = $this->Pernikahan_model->simpanTemplate($id_template);
+        echo json_encode($result);
     }
 }

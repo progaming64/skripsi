@@ -107,4 +107,31 @@ class Pernikahan_model extends CI_Model
         ];
         $this->db->insert('hadiah', $data);
     }
+
+    function simpanTemplate($id)
+    {
+        $id_user = $this->session->userdata('id_user');
+        $cek = $this->db->get_where('template_user', ['id_user' => $id_user]);
+
+
+
+        if ($cek->num_rows() > 0) {
+            $this->db->where('id_user', $id_user);
+            $save_data = $this->db->update('template_user', ['id_template' => $id]);
+        } else {
+            $save_data = $this->db->insert('template_user', ['id_template' => $id, "id_user" => $id_user]);
+        }
+
+        if ($save_data) {
+            $result = [
+                'success'   => true
+            ];
+        } else {
+            $result = [
+                'success'   => false
+            ];
+        }
+
+        return $result;
+    }
 }

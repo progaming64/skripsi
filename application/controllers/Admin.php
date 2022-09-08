@@ -1040,22 +1040,6 @@ class Admin extends CI_Controller
         $this->load->view('templates/footer');
     }
 
-    public function user_akses($akses_id)
-    {
-        $data['title'] = 'Akses User';
-        $data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
-        $data['akses'] = $this->db->get_where('user', ['id' => $akses_id])->row_array();
-
-        $this->db->where('id !=', 1);
-        $data['menu'] = $this->db->get('user_menu')->result_array();
-
-        $this->load->view('templates/header', $data);
-        $this->load->view('templates/sidebar', $data);
-        $this->load->view('templates/topbar', $data);
-        $this->load->view('menu/user_akses', $data);
-        $this->load->view('templates/footer_akses');
-    }
-
     public function changeAccess()
     {
         $menu_id = $this->input->post('menuId');
@@ -1075,6 +1059,45 @@ class Admin extends CI_Controller
         $this->session->set_flashdata('pesan', '<div class="alert alert-success" role="alert">
         Akses telah dirubah !! </div>');
     }
+
+    public function user_akses($akses_id)
+    {
+        $data['title'] = 'Akses User';
+        $data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
+        $data['akses'] = $this->db->get_where('user', ['id' => $akses_id])->row_array();
+
+        $this->db->where('id !=', 1);
+        $data['menu'] = $this->db->get('user_menu')->result_array();
+
+        $this->load->view('templates/header', $data);
+        $this->load->view('templates/sidebar', $data);
+        $this->load->view('templates/topbar', $data);
+        $this->load->view('menu/user_akses', $data);
+        $this->load->view('templates/footer_akses');
+    }
+
+
+
+    public function gantiRole()
+    {
+        $menu_id = $this->input->post('menuId');
+        $role_id = $this->input->post('roleId');
+
+        $data = [
+            'role_id' => $role_id,
+            'menu_id' => $menu_id
+        ];
+
+        $result = $this->db->get_where('user_access_menu', $data);
+        if ($result->num_rows() < 1) {
+            $this->db->insert('user_access_menu', $data);
+        } else {
+            $this->db->delete('user_access_menu', $data);
+        }
+        $this->session->set_flashdata('pesan', '<div class="alert alert-success" role="alert">
+        Akses telah dirubah !! </div>');
+    }
+
 
     public function ubah_akses()
     {

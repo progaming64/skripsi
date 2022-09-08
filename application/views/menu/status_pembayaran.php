@@ -37,7 +37,7 @@
                             <td><?= date('d F Y', $l['tanggal']); ?></td>
                             <td><?= $l['status']; ?></td>
                             <td>
-                                <a href="<?= base_url(); ?>Admin/user_akses/<?= $l['id']; ?>" class="btn btn-success btn-circle">
+                                <a onclick="sudahBayar()" class="btn btn-success btn-circle">
                                     ACC
                                 </a>
                                 <a href="<?= base_url(); ?>Menu/edit_pembayaran/<?= $l['id']; ?>" class="btn btn-warning btn-circle">
@@ -54,3 +54,43 @@
         </div>
     </div>
 </div>
+
+<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+    function sudahBayar() {
+        const swalWithBootstrapButtons = Swal.mixin({
+            customClass: {
+                confirmButton: 'btn btn-success',
+                cancelButton: 'btn btn-danger'
+            },
+            buttonsStyling: false
+        })
+
+        swalWithBootstrapButtons.fire({
+            title: 'Apa kamu yakin?',
+            text: "Memberikan akses undangan kepada user!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Berikan Akses',
+            cancelButtonText: 'Kembali',
+            reverseButtons: true
+        }).then((result) => {
+            if (result.isConfirmed) {
+                swalWithBootstrapButtons.fire(
+                    'Berhasil!',
+                    'Akses undangan berhasil diberikan kepada user.',
+                    'success'
+                )
+            } else if (
+                /* Read more about handling dismissals below */
+                result.dismiss === Swal.DismissReason.cancel
+            ) {
+                swalWithBootstrapButtons.fire(
+                    'Kembali',
+                    'Akses tidak diberikan kepada user :)',
+                    'error'
+                )
+            }
+        })
+    }
+</script>

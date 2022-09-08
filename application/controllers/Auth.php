@@ -223,9 +223,6 @@ class Auth extends CI_Controller
         }
     }
 
-
-
-
     public function logout()
     {
         $this->session->unset_userdata('email');
@@ -234,6 +231,7 @@ class Auth extends CI_Controller
             Anda sudah Logout!! </div>');
         redirect('auth');
     }
+
     public function blocked()
     {
         $data['title'] = 'Validasi';
